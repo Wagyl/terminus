@@ -1,0 +1,14 @@
+31.10.12
+
+Moteur de combat à part. Système de combat très complet dès le départ, pas prévu pour être étendu?
+Comment prendre en compte les buffs? Par ex. lorsqu'un personnage est aveuglé, le moteur de jeu n'envoie pas les mêmes infos à l'affichage. Prendre en compte ces possibilités dès le début?
+
+Durée du tour = temps passée par le joueur lors de sa dernière action (un tour = le temps de l'action du joueur).
+Buff assommé? Met le Dt à -8 . Ie être bloqué = action de laisser passer le temps pendant 8 unité de temps plutôt que ne rien faire (système avance selon les actions du joueur donc se bloque lorsque le joueur est bloqué).
+
+Priorité entre les caractéristiques du personnages? 
+
+Possibilité d'activer/désactiver les actions : notion de service actif ou pas. Par ex. une porte Lockable n'est pas Openable, mais le devient une fois délockée.
+Quand même besoin de pouvoir récupérer une action / la description d'une action (p. ex. Lockable a la même description que Openable au début, et change quand le joueur a essayé une première fois d'ouvrir).
+
+On garde 2 paramètres pour les actions, on les enchainera au besoin (par ex. : Joueur, Fontaine. Fontaine, Gourde).

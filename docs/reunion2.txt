@@ -1,0 +1,24 @@
+29.10.12
+
+Sujet du jour : actions - classes Action
+
+- Une classe par action
+- Fonction apply
+- Vérifier si l'action est possible
+- Persos/monstres/objets ont des traits, pas les actions
+- Une action a des conditions - conséquence
+- Un temps / durée d'incantation
+- Une action a un lanceur et une cible :
+	ouvrir(caster : ouvrir(obj with trait Perso, target : obj with trait Ouvrable)
+ ou bien 
+    abstract class Action { apply(Obj, Obj) : raise Exception; }
+    class Ouvrir extends Action { apply(...) }
+
+- 2 sorts différents  = 2 actions différentes ? 
+Action = lancer un sort ou lancer CE sort ?      
+
+Langage de script pour les actions / sorts / etc ?
+
+
+Il faut un système d'évènements. Ex. d'évènement aléatoire: trébucher, ...
+Extensions possibles : hôtel des ventes

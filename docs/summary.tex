@@ -1,0 +1,111 @@
+
+\documentclass[french]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\geometry{verbose}
+\usepackage{babel}
+\addto\extrasfrench{%
+   \providecommand{\og}{\leavevmode\flqq~}%
+   \providecommand{\fg}{\ifdim\lastskip>\z@\unskip\fi~\frqq}%
+}
+
+\begin{document}
+
+\title{Roguelike}
+
+\maketitle
+
+\section{Système et concepts :}
+
+
+\subsection{Invariants}
+\begin{itemize}
+\item Un seul joueur par partie : toutes les autres entités sont simulées
+par une intelligence artificielle.
+\item Tour par tour, chaque tour étant déclenché par l'action du joueur.
+\item Les cartes sont des grilles 2D ; le plateau de jeu d'une partie est
+composé de plusieurs cartes qui ont des points de passages entre elles
+(portes, escaliers, portails, à sens unique ou non) ; typiquement,
+un donjon composé de plusieurs étages.
+\item Un seul personnage par case.
+\item Le joueur ne connait de la carte que ce qu'il en a exploré.
+\item Le joueur ne voit que les objets et entités qui sont à sa portée.
+\item Même lorsque le joueur ne les voit pas, le comportement des objets
+et entités reste cohérent.
+\end{itemize}
+
+\subsection{Jeu}
+
+Le joueur peut effectuer des actions toujours possibles (se déplacer),
+utiliser des objets de son inventaire (boire une potion) ou intéragir
+avec des objets extérieurs (ouvrir une porte), dans le but d'explorer
+son monde, de vaincre des ennemis ou d'accomplir des quêtes.
+
+
+\subsection{Temps }
+
+Chaque action a une certaine durée.
+
+Un tour de jeu correspond à une action du joueur. Un tour de jeu n'est
+donc pas une unité de temps fixe, mais peut être plus ou moins long
+dans le temps du jeu selon l'action effectuée, bien que cela soit
+transparent pour le joueur.
+
+Durant ce tour, cette action est effectuée, et le temps de l'action
+s'écoule dans le jeu (les créatures susceptibles de se déplacer se
+déplacent, des événements peuvent se produire, etc).
+
+Rien ne se produit dans le jeu sans action du joueur, qui peut donc
+prendre autant de temps qu'il le souhaite pour jouer, sans conséquence.
+
+
+\section{Choix d'architectures et d'implémentation}
+
+
+\subsection{Actions}
+
+
+\subsection{Objets}
+
+
+\subsubsection{Objets mutables et constants}
+
+Les objets peuvent être séparés en deux catégories dont le traitement
+sera différent : les objets qui ont un comportement propre, et les
+objets \og constants \fg{}, i.e. dont l'état peut changer, mais
+pas de leur propre initiative.
+
+Les premiers agissent à chaque tour de jeu ; ils doivent donc être
+parcourues à chaque tour et sont donc stocké dans une structure de
+type \texttt{List}. Ils contiennent une référence sur leur emplacement
+actuel. Lors de ce parcours, le moteur de jeu garde une référence
+vers les objets qui sont à portée du joueur.
+
+Les seconds sont plus statiques, mais doivent pouvoir être récupérés
+rapidement depuis leur position : ils sont donc stockés dans une structure
+de type \texttt{Map}.
+
+
+\subsubsection{Fonctionnalités}
+
+Une fonctionnalité d'un objet correspond à un trait dont il bénéficie.
+Voir le fichier \texttt{/src/draft/traits.scala}, par exemple.
+
+
+\subsubsection{Position d'un objet}
+
+La position d'un objet peut être : 
+\begin{itemize}
+\item sa position sur une carte donnée – i.e. un triplet $(x,y,z)$, $z$
+référencant la carte.
+\item une référence vers un objet de trait \texttt{container}.
+\end{itemize}
+
+\section{Questions en suspens}
+\begin{itemize}
+\item Représentation de la carte ?
+\end{itemize}
+
+\section{Extensions envisagées}
+\end{document}

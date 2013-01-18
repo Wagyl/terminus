@@ -1,0 +1,22 @@
+26.10.12
+
+Invariants: 
+- tour par tour
+- un seul joueur
+- un seul personnage par case
+- les cartes sont des grilles 2D.
+- le joueur ne connait de la carte que ce qu'il a exploré
+- le joueur ne voit que les objets qui sont à sa portée
+- même quand le joueur ne les voit pas, le comportement des objets reste cohérent
+
+
+Objets du jeu héritent d'une classe Object.
+
+Deux types d'objets : mutables (avec méthode mutation()) et non mutables.
+Les objets non mutables sont stockés dans une HashMap (ou équivalent) permettant de retrouver rapidement la liste des objets (non mutables) présents sur une case donnée.
+Les objets mutables sont stockés dans une List (ou équivalent), parcourue à chaque tour pour déclencher le méthode mutation ; au cours de ce parcours, le moteur de jeu retient également dans une liste annexe les objets à portée du joueur (pour les
+envoyer à l'affichage, par exemple).
+
+
+Questions en suspend : comment on représente la carte elle-même ? Où vont les actions ?
+Traits pour ajouter des fonctionnalités ?

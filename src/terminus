@@ -1,0 +1,3 @@
+#!/bin/bash
+# Exécution du roguelike
+scala -classpath classes/ gui.MainGui -hari

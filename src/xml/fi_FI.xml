@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monsters language="fi" location="FI" name="Suomi">
+  <monster id="0">
+    <name>Toto</name>
+    <descr>Nolla + nolla</descr>
+    <descr>0 + 0</descr>
+  </monster>
+  
+  <monster id="1001">
+    <name>Peikko</name>
+    <descr>Paha peikko.</descr>
+  </monster>
+</monsters>

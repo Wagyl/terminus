@@ -1,0 +1,34 @@
+___________
+
+Compilation
+
+Executer la commande make à la racine du projet ; make clean est également disponible.
+
+__________
+
+Exécution
+
+
+Le roguelike peut être lancé par la commande
+
+$ scala -classpath classes/ gui.MainGui
+
+avec les options suivantes :
+
+-swing : Pour activer une interface textuelle dans une fenêtre swing qui offre
+    un meilleur rendu que la console et qui active les racourcis clavier.
+		 
+-hari : Pour activer toutes les fonctionalités de "-swing" et en ajoutant un rendu 
+    graphique en 2D de la carte.
+		
+-hotseat : Pour lancer le jeu en activant l'extension qui permet de jouer à deux joueurs
+    sur le même ordinateur.
+		   
+-realtime : Pour lancer le jeu en activant l'extension qui permet de jouer en Temp-réel.
+
+-server : Pour lancer le jeu en mode serveur afin que des clients puissent s'y connecter.
+-client : Pour lancer le jeu en mode client afin qu'il se connecte au serveur de jeu.
+
+___________
+
+Un exécutable terminus est de plus fourni, qui lance par défaut le jeu avec l'interface "hari".

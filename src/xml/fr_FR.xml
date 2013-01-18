@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monsters language="fr" location="FR" name="Français">
+	<monster id="0">
+		<name>Toto</name>
+		<descr>Zéro + zéro</descr>
+		<descr>0 + 0</descr>
+	</monster>
+
+	<monster id="1001">
+		<name>Gobelin</name>
+		<descr>Un méchant gobelin.</descr>
+		<descr>Un très méchant gobelin.</descr>
+		<descr>Un très très méchant gobelin.</descr>
+	</monster>
+
+	<monster id="42">
+		<name>Poney</name>
+		<descr>Un gentil poney.</descr>
+	</monster>
+</monsters>

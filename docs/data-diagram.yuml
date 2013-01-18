@@ -1,0 +1,33 @@
+[AbstractObject|+nom;+description|+isVisible();+isTransparent();+isStackable();+representation();+notify(Change)],
+[AbstractObject]^-.-[/MutableObject/|+position|+mutation()],
+[AbstractObject]^-.-[/ConstObject/||],
+[AbstractObject]^-.-[Trait;Container||],
+[Trait;Container]+->[Trait;Pickable|+PickUp;+Drop],
+[AbstractObject]^-.-[Reactive|+Change|+reaction()],
+[/ConstObject/]*<-+[HashMap|+getObjects(i j)],
+[/MutableObject/]*<-+[List|+getObjects()],
+// Data
+[Data||;;;;;],
+[List]<1-++[Data],
+[HashMap]<1-++[Data],
+// Actionnable
+[AbstractObject]^-.-[Trait;Actionable||+getActions();+getDefaultAction()],
+[Trait;Actionable]+->*[/Action/],
+[Trait;Actionable]^-.-[Trait;Usable],
+[Trait;Usable]^-.-[Trait;openable|+Open],
+[Trait;Usable]^-.-[Trait;Pickable],
+[Trait;Actionable]^-.-[Trait;Edible],
+[Trait;Edible]^-.-[Trait;drinkable|+Drink],
+[Trait;Actionable]^-.-[Trait;Able],
+[Trait;Able]^-.-[Trait;Creature|+hp;+caracs;+Move|],
+// Player
+[trait;Creature]^-.-[Player]
+[Data]++-1>[Player]
+// Action & Change
+[/Action/|+nom;+description;+duration|+apply()],
+[/Action/]++->*[/Change/|+type Effector \<: AbstractObject;+type Target \<: AbstractObject|+apply(Effector Target)],
+[Reactive]++-*>[/Change/],
+[Event|+time]++->*[/Change/],
+[Data]+->*[Event]
+// Séquence de Change
+[/Change/]^-.-[Sequence|+first : Change;+second : Change]

@@ -1,0 +1,15 @@
+[Controler]
+// Facade Interface - Controler
+[IN|make_action();consume_edible();use_usable();choice();quit();getPlayer()]^-.-[Controler]
+[OUT|+position();+map();+objects();+player();+choice();+message()]<-[Controler]
+[Textual Interface]-.-^[OUT]
+[Graphical User Interface]-.-^[OUT]
+[Network Communication]-.-^[OUT]
+[Textual Interface]->[IN]
+[Graphical User Interface]->[IN]
+[Network Communication]->[IN]
+// Controler
+[Controler]++-1>[Map Generator]
+[Controler]++-1>[ IA ]
+[Controler]++-1>[Fight Engine]
+[Controler]++-1>[DATA|+Player;+Map|+getObjectsAt(i j);+getMutablesObjects()]
