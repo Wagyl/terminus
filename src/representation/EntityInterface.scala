@@ -7,7 +7,7 @@ import communication.parser._
  * Représentation des données pour l'interface utilisateur.
  */
 sealed abstract class EntityInterface (name : String, identifier : Int)
-		extends Representation (name, identifier) with Stream {
+		extends Representation (name, identifier) {
   
   /* Extensions éventuellements ajoutées par des traits des Entity. */
   var extensions : List[Extension] = List()

@@ -7,7 +7,7 @@ import communication.parser._
  * Représentation des Cartes.
  */
 abstract class LandInterface (name : String, identifier : Int) 
-	 extends Representation (name, identifier) with Stream {
+	 extends Representation (name, identifier) {
   	   val height : Int
   	   val width : Int
   	   val floor : Floor

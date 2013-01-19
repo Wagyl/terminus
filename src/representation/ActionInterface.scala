@@ -7,7 +7,7 @@ import communication.parser._
  */
 
 abstract class ActionInterface (name : String, identifier : Int) 
-extends Representation (name, identifier) with Stream {
+extends Representation (name, identifier) {
 
   /*
    * Attention, ce temps n'est qu'une estimation. Il ne reflète pas forcément

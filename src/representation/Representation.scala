@@ -4,7 +4,8 @@ import data._
 import objects.Entity
 import communication.parser._
 
-abstract class Representation (val name : String, val identifier : Int) 
+abstract class Representation (val name : String, val identifier : Int)
+	 extends Stream
 {
   /* Courte description à destination du joueur. */
   var description : String
