@@ -46,71 +46,53 @@ object Representation {
 }
 
 
-
-
 /*
- * Représentation des Cartes.
+ * Trait des représentations pouvant etre traduite dans le protocole
+ * de communication utilisé par le module communication.
  */
-abstract class LandInterface (name : String, identifier : Int) 
-	 extends Representation (name, identifier) {
-  	   val height : Int
-  	   val width : Int
-  	   val floor : Floor
-	   var tiles : List[(Int, TileInterface)] = List()
-
-	   def lexem () : LexObject = {
-	     val lexname = LexAtom("LAND")
-	     val lexlist = EntityInterface.lexem(tiles)
-	     val content = List( LexString(name), LexInt(identifier),
-	       LexString(description), LexInt(height), LexInt(width),
-	       LexInt(floor.z), lexlist)
-	     new LexObject(lexname, content)
-	   }
-	 }
-
-object LandInterface {
-
-  def extract (lexem : LexUnit) : LandInterface = lexem match {
-    case lexobj : LexObject =>
-    if (lexobj.getName != "LAND")
-      throw ProtocolError ("Ceci ne représente pas un Land : " +lexem)
-    else {
-      val content = lexobj.getContent
-      if (content.length != 7)
-	throw ProtocolError("Land mal formé : " +lexem)
-      val name = content(0).getStringValue
-      val identifier = content(1).getIntValue
-      val _description = content(2).getStringValue
-      val _height = content(3).getIntValue
-      val _width = content(4).getIntValue
-      val _floor = Floor(content(5).getIntValue)
-      val list = EntityInterface.extractList(content(6))
-      val tlist = list.filter(_._2.isInstanceOf[TileInterface])
-      val _tiles = tlist.map(x => (x._1, x._2.asInstanceOf[TileInterface]))
-
-      new LandInterface (name, identifier) {
-	var description = _description
-	val height = _height
-  	val width = _width
-  	val floor = _floor
-	tiles = _tiles
-      }
-    }
+trait Stream {
   
-    case _ => throw ProtocolError ("Ceci n'est pas un objet : " +lexem)
-  }
+  /* Atome caractéristique de la classe dans le langage de communication. */
+  def lexname () : String
 
+  /* Traduction de l'objet en une liste de lexème. */
+  def lexcontent () : List[LexUnit]
+
+  def lexeme () : LexObject = {
+    new LexObject(LexAtom(this.lexname), this.lexcontent)
+  }
+  
 }
 
-
-
-
 /*
- * Représentation des Évènements.
+ * Trait des objets compagnions des représentations pouvant etre extraites
+ * d'un lexème du protocole de communication.
  */
-abstract class EventInterface (name : String, identifier : Int) 
-	 extends Representation (name, identifier) {
-	val reason : Int
-	val data : String
-	var description = ""
+trait StreamCompanion[E <: Stream] {
+
+  /* Atome caractéristique de la classe dans le langage de communication */
+  def lexname () : String
+
+  /*
+   * Reconstruction de l'objet d'après une liste de lexème.
+   * Cette méthode doit etre l'opération inverse de E.lexcontent.
+   */
+  def extract (content : List[LexUnit]) : E
+
+  /*
+   * Extrait l'objet du LexUnit donné.
+   */
+  def extract (lexem : LexUnit) : E = lexem match {
+    case lexobj : LexObject =>
+    if (lexobj.getName != this.lexname)
+      throw ProtocolError ("Ceci ne représente pas un " +this.lexname
+	+ " : " +lexem)
+    else {
+      val content = lexobj.getContent
+      extract(content)
+    }
+
+    case _ => throw ProtocolError ("Ceci n'est pas un objet : " +lexem)    
+  }
+
 }
