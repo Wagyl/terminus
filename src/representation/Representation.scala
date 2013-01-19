@@ -4,7 +4,8 @@ import data._
 import objects.Entity
 import communication.parser._
 
-abstract class Representation (val name : String, val identifier : Int) {
+abstract class Representation (val name : String, val identifier : Int) 
+{
   /* Courte description à destination du joueur. */
   var description : String
 }
@@ -61,7 +62,18 @@ trait Stream {
   def lexeme () : LexObject = {
     new LexObject(LexAtom(this.lexname), this.lexcontent)
   }
-  
+}
+
+/*
+ * Méthodes statiques utilitaires sur les Stream.
+ */
+object Stream {
+
+  def lexeme (list : List[(Int, Stream)]) : LexUnit = {
+    val lexlist = list.map(x => LexPair(LexInt(x._1), x._2.lexeme))
+    LexList(lexlist)
+  }
+
 }
 
 /*
@@ -81,6 +93,7 @@ trait StreamCompanion[E <: Stream] {
 
   /*
    * Extrait l'objet du LexUnit donné.
+   * Throw : ProtocolError
    */
   def extract (lexem : LexUnit) : E = lexem match {
     case lexobj : LexObject =>
@@ -93,6 +106,15 @@ trait StreamCompanion[E <: Stream] {
     }
 
     case _ => throw ProtocolError ("Ceci n'est pas un objet : " +lexem)    
+  }
+
+  /*
+   * Extraction d'un lexème correspondant à une liste de couple (int, E).
+   */
+  def extractList (lexem : LexUnit) : List[(Int, E)] = {
+    val list = lexem.getListValue
+    val lexpairs = list.map(lex => (lex.getFirst, lex.getSecond))
+    lexpairs.map(x => (x._1.getIntValue, this.extract(x._2)))
   }
 
 }

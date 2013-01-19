@@ -25,7 +25,7 @@ class SelfMessage (content : List[LexUnit]) extends ServerMessage (content) {
 object SelfMessage {
   def apply (data : (Int, SelfInterface)) : SelfMessage = {
     val content = List[LexUnit](LexInt(Protocol.self), LexInt(data._1),
-      data._2.lexem)
+      data._2.lexeme)
     new SelfMessage(content)
   }
 }
@@ -44,7 +44,7 @@ class DataMessage (content : List[LexUnit]) extends ServerMessage (content) {
 
 object ObjectMessage {
   def apply (objects : List[(Int, EntityInterface)]) : DataMessage = {
-    val lexlist = EntityInterface.lexem(objects)
+    val lexlist = Stream.lexeme(objects)
     val content = List[LexUnit](LexInt(Protocol.data), lexlist)
     new DataMessage(content)
   }
@@ -65,7 +65,7 @@ class InventoryMessage (content : List[LexUnit]) extends ServerMessage (content)
 
 object InventoryMessage {
   def apply (objects : List[(Int, ContentInterface)]) : InventoryMessage = {
-    val lexlist = EntityInterface.lexem(objects)
+    val lexlist = Stream.lexeme(objects)
     val content = List[LexUnit](LexInt(Protocol.data), lexlist)
     new InventoryMessage(content)
   }
@@ -84,7 +84,7 @@ class MapMessage (content : List[LexUnit]) extends ServerMessage (content) {
 
 object MapMessage {
   def apply (map : LandInterface) : MapMessage = {
-    val lexland = map.lexem
+    val lexland = map.lexeme
     val content = List[LexUnit](LexInt(Protocol.map), lexland)
     new MapMessage(content)
   }

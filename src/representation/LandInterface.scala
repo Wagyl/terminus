@@ -7,32 +7,28 @@ import communication.parser._
  * Représentation des Cartes.
  */
 abstract class LandInterface (name : String, identifier : Int) 
-	 extends Representation (name, identifier) {
+	 extends Representation (name, identifier) with Stream {
   	   val height : Int
   	   val width : Int
   	   val floor : Floor
 	   var tiles : List[(Int, TileInterface)] = List()
 
-	   def lexem () : LexObject = {
-	     val lexname = LexAtom("LAND")
-	     val lexlist = EntityInterface.lexem(tiles)
-	     val content = List( LexString(name), LexInt(identifier),
+	   def lexname () = "LAND"
+
+	   def lexcontent () : List[LexUnit] = {
+	     val lexlist = Stream.lexeme(tiles)
+	     List( LexString(name), LexInt(identifier),
 	       LexString(description), LexInt(height), LexInt(width),
 	       LexInt(floor.z), lexlist)
-	     new LexObject(lexname, content)
 	   }
 	 }
 
-object LandInterface {
+object LandInterface extends StreamCompanion[LandInterface] {
+  def lexname () = "LAND"
 
-  def extract (lexem : LexUnit) : LandInterface = lexem match {
-    case lexobj : LexObject =>
-    if (lexobj.getName != "LAND")
-      throw ProtocolError ("Ceci ne représente pas un Land : " +lexem)
-    else {
-      val content = lexobj.getContent
+  def extract (content : List[LexUnit]) : LandInterface = {
       if (content.length != 7)
-	throw ProtocolError("Land mal formé : " +lexem)
+	throw ProtocolError("Land mal formé : " +content)
       val name = content(0).getStringValue
       val identifier = content(1).getIntValue
       val _description = content(2).getStringValue
@@ -50,9 +46,6 @@ object LandInterface {
   	val floor = _floor
 	tiles = _tiles
       }
-    }
-  
-    case _ => throw ProtocolError ("Ceci n'est pas un objet : " +lexem)
   }
 
 }
