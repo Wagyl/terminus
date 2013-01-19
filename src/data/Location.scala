@@ -21,32 +21,25 @@ case class Floor (z:Int) extends Location {
 /*
  * Une position précise d'une carte.
  */
-case class Coordinates (x:Int, y:Int, z:Floor) extends Location { 
+case class Coordinates (x:Int, y:Int, z:Floor) extends Location with Stream { 
   override def toString : String = "Coordinates : (" + x + ", " + y + ")"
 
-  def lexem () : LexUnit = {
-    val lexname = new LexAtom("COORDINATES")
-    val content = List(LexInt(x), LexInt(y), LexInt(z.z))
-    new LexObject(lexname, content)
+  def lexname () = "COORDINATES"
+  def lexcontent () : List[LexUnit] = {
+    List(LexInt(x), LexInt(y), LexInt(z.z))
   }
 }
 
-object Coordinates {
-  def extract (lexem : LexUnit) : Coordinates = lexem match {
-    case lexobj : LexObject =>
-    if (lexobj.getName != "COORDINATES")
-      throw ProtocolError ("Ceci ne représente pas une coordonnée : " +lexem)
-    else {
-      val content = lexobj.getContent
-      if (content.length != 3)
-	throw ProtocolError("Action mal formée : " +lexem)
-      val x = content(0).getIntValue
-      val y = content(1).getIntValue
-      val z = content(2).getIntValue
-      Coordinates(x, y, Floor(z))
-    }
+object Coordinates extends StreamCompanion[Coordinates] {
+  def lexname () = "COORDINATES"
 
-    case _ => throw ProtocolError ("Ceci n'est pas un objet : " +lexem)
+  def extract (content : List[LexUnit]) : Coordinates = {
+    if (content.length != 3)
+      throw ProtocolError("Action mal formée : " +content)
+    val x = content(0).getIntValue
+    val y = content(1).getIntValue
+    val z = content(2).getIntValue
+    Coordinates(x, y, Floor(z))
   }
 }
 

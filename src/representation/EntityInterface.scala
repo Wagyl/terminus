@@ -91,7 +91,7 @@ abstract class SelfInterface (name : String, identifier : Int)
 	   override def lexcontent () : List[LexUnit] = {
 	     List(LexInt(0), LexString(name),
 	       LexInt(identifier), LexString(description),
-	       position.lexem, Stream.lexeme(abilities))
+	       position.lexeme, Stream.lexeme(abilities))
 	   }
 	   
 	 }
@@ -138,7 +138,7 @@ abstract class ObjectInterface (name : String, identifier : Int)
 	   override def lexcontent () : List[LexUnit] = {
 	     List(LexInt(2), LexString(name),
 	       LexInt(identifier), LexString(description),
-	       position.lexem, Stream.lexeme(uses))
+	       position.lexeme, Stream.lexeme(uses))
 	   }
 	 }
 
@@ -150,7 +150,7 @@ abstract class TileInterface (name : String, identifier : Int)
 	   override def lexcontent () : List[LexUnit] = {
 	     List(LexInt(3), LexString(name),
 	       LexInt(identifier), LexString(description),
-	       position.lexem)
+	       position.lexeme)
 	   }
 	 }
 
