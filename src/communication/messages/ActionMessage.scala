@@ -97,7 +97,7 @@ class ResultMessage (content : List[LexUnit]) extends ServerMessage (content) {
 object ResultMessage {
 
   def apply (nonce : Int, result : Result) : ResultMessage = {
-    val lexresult = result.lexem
+    val lexresult = result.lexeme
     val content = List[LexUnit](new LexInt(Protocol.result), LexInt(nonce),
       lexresult)
     new ResultMessage(content)

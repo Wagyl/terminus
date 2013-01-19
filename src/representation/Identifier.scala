@@ -71,6 +71,14 @@ object Identifier {
   val pray = 61
   val admire = 62
 
+
+  /* RESULT */
+  val success = 0
+  val fail = 1
+  val impossible = 2
+  val error = 4
+
+
   /* EVENTS */
   val gameEnd = 0
   val changePlayer = 1

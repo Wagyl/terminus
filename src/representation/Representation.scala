@@ -9,6 +9,7 @@ abstract class Representation (val name : String, val identifier : Int)
 {
   /* Courte description à destination du joueur. */
   var description : String
+
 }
 
 
