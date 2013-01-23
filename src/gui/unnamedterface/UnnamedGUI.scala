@@ -53,6 +53,8 @@ trait TargetDependentModule extends UnnamedModule {
 abstract class UnnamedDisplayHandler extends Out {
   val gameControl: GameControl
   val dataTree: UnnamedData
+  val imageCache: ImageCache
+  val builder: UnnamedBuilder
 
   /* Les listes de souscription */
   var characterModules: List[CharacterModule] = List()
@@ -118,7 +120,7 @@ abstract class UnnamedDisplayHandler extends Out {
   /* Le personnage */
   override def character(data: (Int, SelfInterface)): Unit =
     for (mod <- characterModules)
-      mod.refresh(UnnamedBuilder.buildUnnamedEntity(data._2, data._1))
+      mod.refresh(builder.buildUnnamedEntity(data._2, data._1))
 
   /* Tous les sols / objets case par case */
   override def allObjects(data: List[((Int, TileInterface), List[(Int, EntityInterface)])]): Unit = {
@@ -144,5 +146,5 @@ abstract class UnnamedDisplayHandler extends Out {
   /* Le contenu de l'inventaire */
   override def inventory(data: List[(Int, ContentInterface)]): Unit =
     for (mod <- inventoryModules)
-      mod.refresh(data.map(dt => UnnamedBuilder.buildUnnamedEntity(dt._2, dt._1)))
+      mod.refresh(data.map(dt => builder.buildUnnamedEntity(dt._2, dt._1)))
 }

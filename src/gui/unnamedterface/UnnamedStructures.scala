@@ -11,6 +11,11 @@ import representation.LandInterface
 import representation.OnMap
 import representation.SelfInterface
 
+/* A besoin d'un accès au builder */
+trait NeedBuilder {
+  val builder: UnnamedBuilder
+}
+
 /* Data de base */
 abstract class UnnamedBaseStruct {
   val lastTmpId: Int
@@ -29,7 +34,7 @@ abstract class UnnamedEntity extends UnnamedBaseStruct {
 }
 
 /* Data pour une case */
-abstract class UnnamedTile {
+abstract class UnnamedTile extends NeedBuilder {
   var firstLayer: Option[UnnamedEntity] = None
   var content: List[UnnamedEntity] = List()
 
@@ -39,7 +44,7 @@ abstract class UnnamedTile {
   /* Ajout d'une entité : se charge de différencier un sol d'un objet autre */
   def addEntity(toAdd: EntityInterface, tmpId: Int): UnnamedEntity = {
 
-    val unnamedEntityToAdd = UnnamedBuilder.buildUnnamedEntity(toAdd, tmpId)
+    val unnamedEntityToAdd = builder.buildUnnamedEntity(toAdd, tmpId)
 
     toAdd match {
       case x: TileInterface => majFirstLayer(unnamedEntityToAdd)
@@ -56,13 +61,13 @@ abstract class UnnamedTile {
 }
 
 /* Data pour un étage */
-class UnnamedDataFloor {
+abstract class UnnamedDataFloor extends NeedBuilder {
   var visibleDataFloor: HashMap[Coordinates, UnnamedTile] =
     new HashMap[Coordinates, UnnamedTile]
 
   /* Ajout de data à une coordonnée */
   def addVisibleObject(toAdd: EntityInterface with OnMap,
-                       tmpId: Int): (Int, Int, UnnamedEntity) = {
+    tmpId: Int): (Int, Int, UnnamedEntity) = {
 
     val tmpCoord: Coordinates = toAdd.position
     var result: UnnamedEntity = null
@@ -70,7 +75,7 @@ class UnnamedDataFloor {
     visibleDataFloor.get(tmpCoord) match {
       case Some(e) => result = e.addEntity(toAdd, tmpId)
       case None => {
-        val tmp: UnnamedTile = UnnamedBuilder.buildUnnamedTile(tmpCoord.z.z)
+        val tmp: UnnamedTile = builder.buildUnnamedTile(tmpCoord.z.z)
         result = tmp.addEntity(toAdd, tmpId)
         visibleDataFloor += (tmpCoord -> tmp)
       }
@@ -80,8 +85,8 @@ class UnnamedDataFloor {
 
   /* Ajout/Modification d'une case entière */
   def addVisibleTile(coord: Coordinates,
-                     toAdd: ((Int, TileInterface), List[(Int, EntityInterface)])): UnnamedTile = {
-    val tmp: UnnamedTile = UnnamedBuilder.buildUnnamedTile(coord.z.z)
+    toAdd: ((Int, TileInterface), List[(Int, EntityInterface)])): UnnamedTile = {
+    val tmp: UnnamedTile = builder.buildUnnamedTile(coord.z.z)
     tmp.addEntity(toAdd._1._2, toAdd._1._1)
     for (data <- toAdd._2)
       tmp.addEntity(data._2, data._1)
@@ -110,7 +115,8 @@ class UnnamedData {
     dataMap.get(floorId) match {
       case Some(x) => x
       case None => {
-        val tmp: UnnamedDataFloor = new UnnamedDataFloor
+        val tmp: UnnamedDataFloor =
+          new UnnamedDataFloor { val builder: UnnamedBuilder = this.builder }
         dataMap += (floorId -> tmp)
         tmp
       }

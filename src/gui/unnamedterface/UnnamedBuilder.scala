@@ -5,7 +5,8 @@ import representation.AbleInterface
 import representation.EdibleInterface
 import representation.UsableInterface
 
-object UnnamedBuilder {
+abstract class UnnamedBuilder {
+  val imageCache: ImageCache
 
   /* Construire une UnnamedAction */
   def buildUnnamedAction(buildFrom: ActionInterface, tmpId: Int): UnnamedAction =
@@ -39,10 +40,15 @@ object UnnamedBuilder {
       val name = buildFrom.name
       val description = buildFrom.description
       val actions = buildActionList(buildFrom)
-      val image = ImageCache.getImage(id)
+      val image = imageCache.getImage(id)
     }
 
   /* Construire une UnnamedTile */
-  def buildUnnamedTile(floor: Int): UnnamedTile =
-    new UnnamedTile { val floorId = floor }
+  def buildUnnamedTile(floor: Int): UnnamedTile = {
+    val self: UnnamedBuilder = this
+    new UnnamedTile {
+      val floorId = floor
+      val builder = self
+    }
+  }
 }
